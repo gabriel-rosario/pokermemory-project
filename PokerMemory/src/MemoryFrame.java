@@ -33,18 +33,18 @@ public class MemoryFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	//	public static void main(String[] args) {
-	//		EventQueue.invokeLater(new Runnable() {
-	//			public void run() {
-	//				try {
-	//					MemoryFrame frame = new MemoryFrame();
-	//					frame.setVisible(true);
-	//				} catch (Exception e) {
-	//					e.printStackTrace();
-	//				}
-	//			}
-	//		});
-	//	}
+//		public static void main(String[] args) {
+//			EventQueue.invokeLater(new Runnable() {
+//				public void run() {
+//					try {
+//						MemoryFrame frame = new MemoryFrame();
+//						frame.setVisible(true);
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//				}
+//				}
+//			});
+//		}
 
 	/**
 	 * Create the frame.
@@ -66,6 +66,7 @@ public class MemoryFrame extends JFrame {
 					if(e.getActionCommand().equals("Easy Level")) newGame("easy");
 					else if(e.getActionCommand().equals("Equal Pair Level")) newGame("equalpair");
 					else if(e.getActionCommand().equals("Same Rank Trio Level")) newGame("ranktrio");
+					else if(e.getActionCommand().equals("Flush Level")) newGame("flush");
 					else if(e.getActionCommand().equals("How To Play")) showInstructions();
 					else if(e.getActionCommand().equals("About")) showAbout();
 					else if(e.getActionCommand().equals("Exit")) System.exit(0);
@@ -86,6 +87,10 @@ public class MemoryFrame extends JFrame {
 		JMenuItem sameRankTrioMenuItem = new JMenuItem("Same Rank Trio Level");
 		sameRankTrioMenuItem.addActionListener(menuHandler);		
 		mnFile.add(sameRankTrioMenuItem);
+		
+		JMenuItem FlushLevelMenuItem = new JMenuItem("Flush Level");
+		FlushLevelMenuItem.addActionListener(menuHandler);		
+		mnFile.add(FlushLevelMenuItem);
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
@@ -200,6 +205,10 @@ public class MemoryFrame extends JFrame {
 			this.difficulty = new RankTrioLevel(this.turnCounterLabel, this);
 			this.getLevelDescriptionLabel().setText("Same Rank Trio Level");
 		}
+		else if(difficultyMode.equalsIgnoreCase("flush")){
+			this.difficulty = new FlushLevel(this.turnCounterLabel, this);
+			this.getLevelDescriptionLabel().setText("Flush Level");
+		}
 
 		else {
 			throw new RuntimeException("Illegal Game Level Detected");
@@ -268,7 +277,23 @@ public class MemoryFrame extends JFrame {
 						"is won when all cards are face up.\r\n"+
 						"\r\n"+
 						"Each time you flip two cards up, the turn counter will\r\n"+
-						"increase.  Try to win the game in the fewest number of turns!";
+						"increase.  Try to win the game in the fewest number of turns! \r\n" +
+		"\r\n" +
+		"FLush Level\r\n"+
+		"The game consists of a grid of distinct cards.  At the start of the game,\r\n"+
+		"every card is face down.  The object is to find all the quintent  \r\n"+
+		" of cards with the same suit and turn them face up.\r\n"+
+		"\r\n"+
+		"Click on the five cards to turn them face up. If the cards have the \r\n"+
+		"same suit, then you have discovered a quintent.  The quintent will remain\r\n"+
+		"turned up.  If the cards are different, they will flip back\r\n"+
+		"over automatically after a short delay.  Continue flipping\r\n"+
+		"cards until you have discovered all of the pairs.  The game\r\n"+
+		"is won when all cards are face up.\r\n"+
+		"\r\n"+
+		"Each time you flip four cards up, the turn counter will\r\n"+
+		"increase.  Try to win the game in the fewest number of turns!";
+						
 
 		JOptionPane.showMessageDialog(this, HOWTOPLAYTEXT
 				, "How To Play", JOptionPane.PLAIN_MESSAGE);
