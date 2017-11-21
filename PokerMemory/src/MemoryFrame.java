@@ -67,6 +67,7 @@ public class MemoryFrame extends JFrame {
 					else if(e.getActionCommand().equals("Equal Pair Level")) newGame("equalpair");
 					else if(e.getActionCommand().equals("Same Rank Trio Level")) newGame("ranktrio");
 					else if(e.getActionCommand().equals("Flush Level")) newGame("flush");
+					else if(e.getActionCommand().equals("Straight Level")) newGame("straight");
 					else if(e.getActionCommand().equals("How To Play")) showInstructions();
 					else if(e.getActionCommand().equals("About")) showAbout();
 					else if(e.getActionCommand().equals("Exit")) System.exit(0);
@@ -91,6 +92,10 @@ public class MemoryFrame extends JFrame {
 		JMenuItem FlushLevelMenuItem = new JMenuItem("Flush Level");
 		FlushLevelMenuItem.addActionListener(menuHandler);		
 		mnFile.add(FlushLevelMenuItem);
+		
+		JMenuItem StraightLevelMenuItem = new JMenuItem("Straight Level");
+		StraightLevelMenuItem.addActionListener(menuHandler);		
+		mnFile.add(StraightLevelMenuItem);
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
@@ -209,7 +214,10 @@ public class MemoryFrame extends JFrame {
 			this.difficulty = new FlushLevel(this.turnCounterLabel, this);
 			this.getLevelDescriptionLabel().setText("Flush Level");
 		}
-
+		else if(difficultyMode.equalsIgnoreCase("straight")){
+			this.difficulty = new StraightLevel(this.turnCounterLabel, this);
+			this.getLevelDescriptionLabel().setText("Straight Level");
+		}
 		else {
 			throw new RuntimeException("Illegal Game Level Detected");
 		}
@@ -292,7 +300,22 @@ public class MemoryFrame extends JFrame {
 		"is won when all cards are face up.\r\n"+
 		"\r\n"+
 		"Each time you flip four cards up, the turn counter will\r\n"+
-		"increase.  Try to win the game in the fewest number of turns!";
+		"increase.  Try to win the game in the fewest number of turns!"+
+		"\r\n"+
+			"Straight Level\r\n"+
+			"The game consists of a grid of distinct cards.  At the start of the game,\r\n"+
+			"every card is face down.  The object is to find all the quintent  \r\n"+
+			" of cards that are in a sequence with at least two distinct suits, and turn them face up.\r\n"+
+			"\r\n"+
+			"Click on the five cards to turn them face up. If the cards are in sequence and  \r\n"+
+			"at least two different suits, then you have discovered a quintent.  The quintent will remain\r\n"+
+			"turned up.  If the cards are different, they will flip back\r\n"+
+			"over automatically after a short delay.  Continue flipping\r\n"+
+			"cards until you have discovered all of the pairs.  The game\r\n"+
+			"is won when all cards are face up.\r\n"+
+			"\r\n"+
+			"Each time you flip four cards up, the turn counter will\r\n"+
+			"increase.  Try to win the game in the fewest number of turns!";
 						
 
 		JOptionPane.showMessageDialog(this, HOWTOPLAYTEXT
