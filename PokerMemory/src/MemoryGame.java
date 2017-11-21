@@ -68,8 +68,6 @@ public class MemoryGame implements ActionListener {
 		newMenuItem("Easy Level", difficultyMenu, this);
 		newMenuItem("Equal Pair Level", difficultyMenu, this);
 		newMenuItem("Same Rank Trio Level", difficultyMenu, this);
-		newMenuItem("Flush Level", difficultyMenu, this);
-		newMenuItem("Straight Level", difficultyMenu, this);
 
 		// Help menu
 		JMenu helpMenu = new JMenu("Help");
@@ -93,8 +91,6 @@ public class MemoryGame implements ActionListener {
 			if(e.getActionCommand().equals("Easy Level")) newGame("easy");
 			else if(e.getActionCommand().equals("Equal Pair Level")) newGame("medium");
 			else if(e.getActionCommand().equals("Same Rank Trio Level")) newGame("trio");
-			else if(e.getActionCommand().equals("FLush Level")) newGame("flush");
-			else if(e.getActionCommand().equals("Straight Level")) newGame("straight");
 			else if(e.getActionCommand().equals("How To Play")) showInstructions();
 			else if(e.getActionCommand().equals("About")) showAbout();
 			else if(e.getActionCommand().equals("Exit")) System.exit(0);
@@ -148,12 +144,6 @@ public class MemoryGame implements ActionListener {
 
 		else if(difficultyMode.equalsIgnoreCase("trio")){
 			this.difficulty = new RankTrioLevel(this.turnCounterLabel, this.mainFrame);
-		}
-		else if(difficultyMode.equalsIgnoreCase("flush")){
-			this.difficulty = new FlushLevel(this.turnCounterLabel, this.mainFrame);
-		}
-		else if(difficultyMode.equalsIgnoreCase("straight")){
-			this.difficulty = new StraightLevel(this.turnCounterLabel, this.mainFrame);
 		}
 		else {
 			throw new RuntimeException("Illegal Game Level Detected");
@@ -211,37 +201,7 @@ public class MemoryGame implements ActionListener {
 						"is won when all cards are face up.\r\n"+
 						"\r\n"+
 						"Each time you flip two cards up, the turn counter will\r\n"+
-						"increase.  Try to win the game in the fewest number of turns! \r\n" +
-						"\r\n" +
-						"FLush Level\r\n"+
-						"The game consists of a grid of distinct cards.  At the start of the game,\r\n"+
-						"every card is face down.  The object is to find all the quintent  \r\n"+
-						" of cards with the same suit and turn them face up.\r\n"+
-						"\r\n"+
-						"Click on the five cards to turn them face up. If the cards have the \r\n"+
-						"same suit, then you have discovered a quintent.  The quintent will remain\r\n"+
-						"turned up.  If the cards are different, they will flip back\r\n"+
-						"over automatically after a short delay.  Continue flipping\r\n"+
-						"cards until you have discovered all of the pairs.  The game\r\n"+
-						"is won when all cards are face up.\r\n"+
-						"\r\n"+
-						"Each time you flip four cards up, the turn counter will\r\n"+
-						"increase.  Try to win the game in the fewest number of turns!"+
-						"\r\n" +
-						"Straight Level\r\n"+
-						"The game consists of a grid of distinct cards.  At the start of the game,\r\n"+
-						"every card is face down.  The object is to find all the quintent  \r\n"+
-						" of cards that are in a sequence with at least two distinct suits, and turn them face up.\r\n"+
-						"\r\n"+
-						"Click on the five cards to turn them face up. If the cards are in sequence and  \r\n"+
-						"at least two different suits, then you have discovered a quintent.  The quintent will remain\r\n"+
-						"turned up.  If the cards are different, they will flip back\r\n"+
-						"over automatically after a short delay.  Continue flipping\r\n"+
-						"cards until you have discovered all of the pairs.  The game\r\n"+
-						"is won when all cards are face up.\r\n"+
-						"\r\n"+
-						"Each time you flip four cards up, the turn counter will\r\n"+
-						"increase.  Try to win the game in the fewest number of turns!";
+						"increase.  Try to win the game in the fewest number of turns! \r\n";
 
 		JOptionPane.showMessageDialog(this.mainFrame, HOWTOPLAYTEXT
 				, "How To Play", JOptionPane.PLAIN_MESSAGE);
