@@ -164,6 +164,7 @@ public class MemoryFrameWithScore extends MemoryFrame {
 
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		panel_1.add(horizontalStrut_3);
+		
 	}
 
 	public TurnsTakenCounterLabel getTurnCounterLabel() {
