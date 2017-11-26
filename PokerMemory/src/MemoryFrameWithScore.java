@@ -33,6 +33,8 @@ public class MemoryFrameWithScore extends MemoryFrame {
 	private GameLevel difficulty;
 	private JPanel centerGrid;
 	private JLabel levelDescriptionLabel;
+	private JLabel scoreLabel;
+
 
 	/**
 	 * Launch the application.
@@ -157,10 +159,10 @@ public class MemoryFrameWithScore extends MemoryFrame {
 
 		JLabel lblNewLabel_3 = new JLabel("Points:");
 		panel_1.add(lblNewLabel_3);
-
-		JLabel lblNewLabel_2 = new JLabel("New label");
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel_1.add(lblNewLabel_2);
+		
+		scoreLabel = new JLabel("SCORE");
+		scoreLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		panel_1.add(scoreLabel);
 
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		panel_1.add(horizontalStrut_3);
@@ -189,6 +191,10 @@ public class MemoryFrameWithScore extends MemoryFrame {
 	
 	public void setLevelDescriptionLabel(JLabel levelDescriptionLabel) {
 		this.levelDescriptionLabel = levelDescriptionLabel;
+	}
+	
+	public void setScore(long score) {
+		this.scoreLabel.setText("" + score);
 	}
 
 	/**
