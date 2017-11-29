@@ -2,20 +2,25 @@ import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class StraightLevel extends FlushLevel{
 	
 	int [] cardsArray = new int [5];
 	boolean cardsFormStraight = false;
+	MemoryFrameWithScore memoryFrame = new MemoryFrameWithScore();
+	//private ScoreLabel scoreLabel;
+
+
 	
-	protected StraightLevel(TurnsTakenCounterLabel validTurnTime, JFrame mainFrame) {
+	protected StraightLevel( TurnsTakenCounterLabel validTurnTime, JFrame mainFrame) {
 		super(validTurnTime, mainFrame);
 		this.getTurnsTakenCounter().setDifficultyModeLabel("Straight Level");
 		this.setCardsToTurnUp(5);
 		this.setCardsPerRow(10);
 		this.setRowsPerGrid(5);
 	}
-
+/*
 		@Override
 		protected void makeDeck() {
 			
@@ -43,7 +48,7 @@ public class StraightLevel extends FlushLevel{
 				this.getGrid().add( new Card(this, this.getCardIcons()[num], backIcon, num, rank, suit));
 			}
 		}		
-		
+		*/
 		@Override
 		protected boolean turnUp(Card card) {
 			// the card may be turned
@@ -58,7 +63,7 @@ public class StraightLevel extends FlushLevel{
 					this.getTurnsTakenCounter().increment();
 					
 					//Make an Array of type Int to store ranks of cards as numbers; not stings
-					for(int i = 0; i<this.getTurnedCardsBuffer().size();i++) {
+					for(int i = 0; i < this.getTurnedCardsBuffer().size();i++) {
 						switch (this.getTurnedCardsBuffer().get(i).getRank()) {
 						case "2": cardsArray[i] = 2;
 						break;
@@ -100,20 +105,25 @@ public class StraightLevel extends FlushLevel{
 							cardsFormStraight = false;
 						}
 					
+					
 					//if the cards are a Straight, leave them face up, clear buffer
 					if(cardsFormStraight==true) {
 						// Five cards match, so remove them from the list (they will remain face up)
 						this.getTurnedCardsBuffer().clear();
+						//memoryFrame.setScore(1000);
 					}
 					else
 					{
 						// The cards do not match, so start the timer to turn them down
 						this.getTurnDownTimer().start();
 					}
+
 				}
 				return true;
 			}
+			
 			return false;
+			
 		}
 	
 

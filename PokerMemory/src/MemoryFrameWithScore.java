@@ -160,9 +160,10 @@ public class MemoryFrameWithScore extends MemoryFrame {
 		JLabel lblNewLabel_3 = new JLabel("Points:");
 		panel_1.add(lblNewLabel_3);
 		
-		scoreLabel = new JLabel("SCORE");
+		scoreLabel = new JLabel("0");
 		scoreLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel_1.add(scoreLabel);
+		
 
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		panel_1.add(horizontalStrut_3);
@@ -179,6 +180,10 @@ public class MemoryFrameWithScore extends MemoryFrame {
 
 	public JLabel getLevelDescriptionLabel() {
 		return levelDescriptionLabel;
+	}
+	
+	public JLabel getScoreLabel() {
+		return this.scoreLabel;
 	}
 
 	public void setTurnCounterLabel(TurnsTakenCounterLabel turnCounterLabel) {
@@ -213,12 +218,12 @@ public class MemoryFrameWithScore extends MemoryFrame {
 			this.getLevelDescriptionLabel().setText("Easy Level");
 		}
 		else if(difficultyMode.equalsIgnoreCase("equalpair")){
-			this.difficulty = new EqualPairLevel(this.turnCounterLabel, this);
+			this.difficulty = new EqualPairLevelWithScore(this.turnCounterLabel, this);
 			this.getLevelDescriptionLabel().setText("Equal Pair Level");
 		}
 
 		else if(difficultyMode.equalsIgnoreCase("ranktrio")){
-			this.difficulty = new RankTrioLevel(this.turnCounterLabel, this);
+			this.difficulty = new RankTrioWithScore(this.turnCounterLabel, this);
 			this.getLevelDescriptionLabel().setText("Same Rank Trio Level");
 		}
 		else if(difficultyMode.equalsIgnoreCase("flush")){
