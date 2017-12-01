@@ -2,11 +2,14 @@ import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class ComboLevel extends FlushLevel{
-	int [] cardsArray = new int [5];
+	int [] cardsRankArray = new int [5];
+	String [] cardsSuitsArray = new String [5];
 	boolean cardsFormStraight = false;
 	boolean cardsFormFlush = false; 
+	boolean cardsFormFullHouse = false;
 	
 	
 	protected ComboLevel(TurnsTakenCounterLabel validTurnTime, JFrame mainFrame) {
@@ -59,17 +62,28 @@ public class ComboLevel extends FlushLevel{
 					// We are uncovering the last card in this turn
 					// Record the player's turn
 					this.getTurnsTakenCounter().increment();
-					// get the other card (which was already turned up)
+					
+					//turned card's suits are stored in an array of strings
+					for(int i = 0; i<getTurnedCardsBuffer().size();i++)
+					{
+						cardsSuitsArray[i] = this.getTurnedCardsBuffer().get(i).getSuit();
+					}
+					
 					Card otherCard1 = (Card) this.getTurnedCardsBuffer().get(0);
 					Card otherCard2 = (Card) this.getTurnedCardsBuffer().get(1);
 					Card otherCard3 = (Card) this.getTurnedCardsBuffer().get(2);
 					Card otherCard4 = (Card) this.getTurnedCardsBuffer().get(3);
 					Card otherCard5 = (Card) this.getTurnedCardsBuffer().get(4);
 					
-					
-				
-				
+					//compare strings to see if the suits match up; if they do, cards form a straight
 					if((card.getSuit().equals(otherCard1.getSuit())) && (card.getSuit().equals(otherCard2.getSuit())) && (card.getSuit().equals(otherCard3.getSuit())) && (card.getSuit().equals(otherCard4.getSuit())) && (card.getSuit().equals(otherCard5.getSuit()))){
+						cardsFormFlush = true;
+					}else {
+						cardsFormFlush = false;
+					}
+				
+				
+					/*if((card.getSuit().equals(otherCard1.getSuit())) && (card.getSuit().equals(otherCard2.getSuit())) && (card.getSuit().equals(otherCard3.getSuit())) && (card.getSuit().equals(otherCard4.getSuit())) && (card.getSuit().equals(otherCard5.getSuit()))){
 						
 						cardsFormFlush = true;
 						
@@ -78,7 +92,7 @@ public class ComboLevel extends FlushLevel{
 					{
 						// The cards do not match, so start the timer to turn them down
 						cardsFormFlush = false;
-					}
+					}*/
 					
 //					if(cardsFormFlush==true) {
 //						// Five cards match, so remove them from the list (they will remain face up)
@@ -91,48 +105,68 @@ public class ComboLevel extends FlushLevel{
 //					
 //					}
 	
-					
+					//turn ranks from string to int and store them in an array of ints
 					for(int i = 0; i<this.getTurnedCardsBuffer().size();i++) {
 						switch (this.getTurnedCardsBuffer().get(i).getRank()) {
-						case "2": cardsArray[i] = 2;
+						case "2": cardsRankArray[i] = 2;
 						break;
-						case "3": cardsArray[i] = 3;
+						case "3": cardsRankArray[i] = 3;
 						break;
-						case "4": cardsArray[i] = 4;
+						case "4": cardsRankArray[i] = 4;
 						break;
-						case "5": cardsArray[i] = 5;
+						case "5": cardsRankArray[i] = 5;
 						break;
-						case "6": cardsArray[i] = 6;
+						case "6": cardsRankArray[i] = 6;
 						break;
-						case "7": cardsArray[i] = 7;
+						case "7": cardsRankArray[i] = 7;
 						break;
-						case "8": cardsArray[i] = 8;
+						case "8": cardsRankArray[i] = 8;
 						break;
-						case "9": cardsArray[i] = 9;
+						case "9": cardsRankArray[i] = 9;
 						break;
-						case "t": cardsArray[i] = 10;
+						case "t": cardsRankArray[i] = 10;
 						break;
-						case "j": cardsArray[i] = 11;
+						case "j": cardsRankArray[i] = 11;
 						break;
-						case "q": cardsArray[i] = 12;
+						case "q": cardsRankArray[i] = 12;
 						break;
-						case "k": cardsArray[i] = 13;
+						case "k": cardsRankArray[i] = 13;
 						break;
-						case "a": cardsArray[i] = 14;
+						case "a": cardsRankArray[i] = 14;
 						break;
 						default: break;
 						}
 					}
 					
 					//Sort Array of int Ranks in ascending order
-					Arrays.sort(cardsArray);		
+					Arrays.sort(cardsRankArray);		
 					
 					//Check if they are in sequence (ex. 3,4,5,6,7) by comparing each value to the value in first positon of array
-					if(cardsArray[0]==(cardsArray[1])-1 && cardsArray[0]==(cardsArray[2])-2 && cardsArray[0]==(cardsArray[3])-3 && cardsArray[0]==(cardsArray[4])-4) {
+					if(cardsRankArray[0]==(cardsRankArray[1])-1 && cardsRankArray[0]==(cardsRankArray[2])-2 && cardsRankArray[0]==(cardsRankArray[3])-3 && cardsRankArray[0]==(cardsRankArray[4])-4) {
 							cardsFormStraight = true;
 						}else {
 							cardsFormStraight = false;
-						}
+					}
+					
+					//Check if cards form a full house (trio and a pair) ex. 4,4,4,7,7 OR 4,4,7,7,7
+					if(((cardsRankArray[0]==cardsRankArray[1])&&(cardsRankArray[0]==cardsRankArray[2])&&(cardsRankArray[3]==cardsRankArray[4]))||((cardsRankArray[0]==cardsRankArray[1])&&(cardsRankArray[2]==cardsRankArray[3])&&(cardsRankArray[2]==cardsRankArray[4])) ) {
+						cardsFormFullHouse = true;
+					}else {
+						cardsFormFullHouse = false;
+					}
+					
+					//If the cards are a straight OR a flush OR a fullHouse, leave them up
+					if(cardsFormStraight||cardsFormFlush||cardsFormFullHouse) {
+						this.getTurnedCardsBuffer().clear();
+					}else {
+						this.getTurnDownTimer().start();
+					}
+					
+					//Object [] possibleHands = {"Straight","Flush","Full House","Pass"};
+					
+					//if(cardsFormStraight || cardsFormFlush || cardsFormFullHouse) {
+					//	JOptionPane.showMessageDialog(getMainFrame(), "Select One:", "Possible Winning Hands", JOptionPane.INFORMATION_MESSAGE,null,possibleHands,possibleHands[0]);
+					//}
 					
 				}
 				return true;
