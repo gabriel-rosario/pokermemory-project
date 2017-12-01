@@ -32,7 +32,7 @@ public class TurnsTakenCounterLabel extends JLabel
 	
 	public int getNumOfTurns(){
 		return this.numTurns;
-		}
+	}
 	
 	/**
 	 * Update the text label with the current counter value

@@ -9,6 +9,7 @@ public class StraightLevel extends FlushLevel{
 	int [] cardsArray = new int [5];
 	boolean cardsFormStraight = false;
 	MemoryFrameWithScore memoryFrame = new MemoryFrameWithScore();
+	long score = 0;
 	//private ScoreLabel scoreLabel;
 
 
@@ -108,14 +109,23 @@ public class StraightLevel extends FlushLevel{
 					
 					//if the cards are a Straight, leave them face up, clear buffer
 					if(cardsFormStraight==true) {
+						if(cardsArray[4]==14) {
+							this.getTurnedCardsBuffer().clear();
+							score+=1000+100*20;
+							getMainFrame().setScore(score);
+						}else {
+							this.getTurnedCardsBuffer().clear();
+							score += 1000 + 100*cardsArray[4];
+							getMainFrame().setScore(score);
+						}
 						// Five cards match, so remove them from the list (they will remain face up)
-						this.getTurnedCardsBuffer().clear();
-						//memoryFrame.setScore(1000);
 					}
 					else
 					{
 						// The cards do not match, so start the timer to turn them down
 						this.getTurnDownTimer().start();
+						score-=5;
+						getMainFrame().setScore(score);
 					}
 
 				}
@@ -124,6 +134,23 @@ public class StraightLevel extends FlushLevel{
 			
 			return false;
 			
+		}
+		
+		//GAME OVER 
+		@Override
+		protected boolean  isGameOver(){
+			for(int i = 0; i<this.getGrid().size()-2;i++) {
+				for(int j = i+1; j<this.getGrid().size()-1;j++) {
+					for(int k = j+1;j<this.getGrid().size();k++) {
+						if(this.getGrid().get(i).isFaceUp());
+					}
+				}
+			}
+			//for (int i =0; i< this.getGrid().size();i++)
+				//if(!this.getGrid().get(i).isFaceUp()) return false;
+
+
+			return true;
 		}
 	
 

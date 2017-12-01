@@ -13,6 +13,10 @@ import javax.swing.JFrame;
 public class RankTrioWithScore extends EqualPairLevel {
 	
 	MemoryFrameWithScore memoryFrame = new MemoryFrameWithScore();
+	long score = 0;
+	int [] cardsArray = new int [3];
+	long rankSum = 0;
+
 
 	// TRIO LEVEL: The goal is to find, on each turn, three cards with the same rank
 
@@ -64,22 +68,64 @@ public class RankTrioWithScore extends EqualPairLevel {
 				// We are uncovering the last card in this turn
 				// Record the player's turn
 				this.getTurnsTakenCounter().increment();
+				
+				for(int i = 0; i < this.getTurnedCardsBuffer().size();i++) {
+					switch (this.getTurnedCardsBuffer().get(i).getRank()) {
+					case "2": cardsArray[i] = 2;
+					break;
+					case "3": cardsArray[i] = 3;
+					break;
+					case "4": cardsArray[i] = 4;
+					break;
+					case "5": cardsArray[i] = 5;
+					break;
+					case "6": cardsArray[i] = 6;
+					break;
+					case "7": cardsArray[i] = 7;
+					break;
+					case "8": cardsArray[i] = 8;
+					break;
+					case "9": cardsArray[i] = 9;
+					break;
+					case "t": cardsArray[i] = 10;
+					break;
+					case "j": cardsArray[i] = 11;
+					break;
+					case "q": cardsArray[i] = 12;
+					break;
+					case "k": cardsArray[i] = 13;
+					break;
+					case "a": cardsArray[i] = 20;
+					break;
+					default: break;
+					}
+				}
+				
+				for(int i= 0; i<cardsArray.length;i++) {
+					rankSum = rankSum + cardsArray[i];
+				}
+				
 				// get the other card (which was already turned up)
 				Card otherCard1 = (Card) this.getTurnedCardsBuffer().get(0);
 				Card otherCard2 = (Card) this.getTurnedCardsBuffer().get(1);
 				if((card.getRank().equals(otherCard1.getRank())) && (card.getRank().equals(otherCard2.getRank()))) {
 					// Three cards match, so remove them from the list (they will remain face up)
-					memoryFrame.setScore(10);
+					score += score + 100 + rankSum;
+					getMainFrame().setScore(score);
 					this.getTurnedCardsBuffer().clear();
 				}
 				else
 				{
 					// The cards do not match, so start the timer to turn them down
 					this.getTurnDownTimer().start();
+					rankSum = 0;
+					score -= 5;
+					getMainFrame().setScore(score);
 				}
 			}
 			return true;
 		}
 		return false;
 	}
+	
 }

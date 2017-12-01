@@ -34,6 +34,7 @@ public class MemoryFrameWithScore extends MemoryFrame {
 	private JPanel centerGrid;
 	private JLabel levelDescriptionLabel;
 	private JLabel scoreLabel;
+	//private ScoreCounterLabel scoreCounter;
 
 
 	/**
@@ -74,6 +75,7 @@ public class MemoryFrameWithScore extends MemoryFrame {
 					else if(e.getActionCommand().equals("Same Rank Trio Level")) newGame("ranktrio");
 					else if(e.getActionCommand().equals("Flush Level")) newGame("flush");
 					else if(e.getActionCommand().equals("Straight Level")) newGame("straight");
+					else if(e.getActionCommand().equals("Combo Level")) newGame("combo");
 					else if(e.getActionCommand().equals("How To Play")) showInstructions();
 					else if(e.getActionCommand().equals("About")) showAbout();
 					else if(e.getActionCommand().equals("Exit")) System.exit(0);
@@ -102,6 +104,10 @@ public class MemoryFrameWithScore extends MemoryFrame {
 		JMenuItem StraightLevelMenuItem = new JMenuItem("Straight Level");
 		StraightLevelMenuItem.addActionListener(menuHandler);		
 		mnFile.add(StraightLevelMenuItem);
+		
+		JMenuItem ComboLevelMenuItem = new JMenuItem("Combo Level");
+		ComboLevelMenuItem.addActionListener(menuHandler);
+		mnFile.add(ComboLevelMenuItem);
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
@@ -160,6 +166,11 @@ public class MemoryFrameWithScore extends MemoryFrame {
 		JLabel lblNewLabel_3 = new JLabel("Points:");
 		panel_1.add(lblNewLabel_3);
 		
+		/*scoreCounter = new ScoreCounterLabel();
+		scoreCounter.setText("");
+		panel_1.add(scoreCounter);
+		*/
+		
 		scoreLabel = new JLabel("0");
 		scoreLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel_1.add(scoreLabel);
@@ -182,9 +193,10 @@ public class MemoryFrameWithScore extends MemoryFrame {
 		return levelDescriptionLabel;
 	}
 	
-	public JLabel getScoreLabel() {
+	/*public JLabel getScoreLabel() {
 		return this.scoreLabel;
 	}
+	*/
 
 	public void setTurnCounterLabel(TurnsTakenCounterLabel turnCounterLabel) {
 		this.turnCounterLabel = turnCounterLabel;
@@ -233,6 +245,10 @@ public class MemoryFrameWithScore extends MemoryFrame {
 		else if(difficultyMode.equalsIgnoreCase("straight")){
 			this.difficulty = new StraightLevel(this.turnCounterLabel, this);
 			this.getLevelDescriptionLabel().setText("Straight Level");
+		}
+		else if(difficultyMode.equalsIgnoreCase("combo")) {
+			this.difficulty = new ComboLevel(this.turnCounterLabel,this);
+			this.getLevelDescriptionLabel().setText("Combo Level");
 		}
 		else {
 			throw new RuntimeException("Illegal Game Level Detected");

@@ -15,6 +15,8 @@ import javax.swing.JFrame;
 public class EqualPairLevelWithScore extends EasyLevel {
 	
 	MemoryFrameWithScore memoryFrame = new MemoryFrameWithScore();
+	//ScoreCounterLabel scoreCounter = new ScoreCounterLabel();
+	long score = 0;
 
 	protected EqualPairLevelWithScore(TurnsTakenCounterLabel validTurnTime, JFrame mainFrame) {
 		super(validTurnTime, mainFrame);
@@ -78,11 +80,16 @@ public class EqualPairLevelWithScore extends EasyLevel {
 				Card otherCard = (Card) this.getTurnedCardsBuffer().get(0);
 				// the cards match, so remove them from the list (they will remain face up)
 				if( otherCard.getNum() == card.getNum()) {
-					//this.memoryFrame.setScore(10);
 					this.getTurnedCardsBuffer().clear();
+					score = score + 50;
+					getMainFrame().setScore(score);
 				}
 				// the cards do not match, so start the timer to turn them down
-				else {this.getTurnDownTimer().start();}
+				else {
+					this.getTurnDownTimer().start();
+					score = score - 5;
+					getMainFrame().setScore(score);
+				}
 			}
 			return true;
 		}
@@ -99,12 +106,15 @@ public class EqualPairLevelWithScore extends EasyLevel {
 	@Override
 	protected boolean  isGameOver(){
 
-		for (int i =0; i< this.getGrid().size();i++)
-			if(!this.getGrid().get(i).isFaceUp()) return false;
-
+		for (int i =0; i< this.getGrid().size();i++) {
+			if(!this.getGrid().get(i).isFaceUp()) {
+				return false;
+			}
+		}
 
 		return true;
 	}
+	
 
 
 }

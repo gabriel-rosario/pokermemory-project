@@ -3,15 +3,15 @@ import java.util.Arrays;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-public class FlushLevel extends RankTrioLevel{
+public class ComboLevel extends FlushLevel{
+	int [] cardsArray = new int [5];
+	boolean cardsFormStraight = false;
+	boolean cardsFormFlush = false; 
 	
-	int [] cardsArray = new int[5];
-	long rankSum = 0;
-	long score = 0;
 	
-	protected FlushLevel(TurnsTakenCounterLabel validTurnTime, JFrame mainFrame) {
+	protected ComboLevel(TurnsTakenCounterLabel validTurnTime, JFrame mainFrame) {
 		super(validTurnTime, mainFrame);
-		this.getTurnsTakenCounter().setDifficultyModeLabel("FLush Level");
+		this.getTurnsTakenCounter().setDifficultyModeLabel("Combo Level");
 		this.setCardsToTurnUp(5);
 		this.setCardsPerRow(10);
 		this.setRowsPerGrid(5);
@@ -45,6 +45,8 @@ public class FlushLevel extends RankTrioLevel{
 			}
 		}
 
+		
+		
 		@Override
 		protected boolean turnUp(Card card) {
 			// the card may be turned
@@ -57,9 +59,40 @@ public class FlushLevel extends RankTrioLevel{
 					// We are uncovering the last card in this turn
 					// Record the player's turn
 					this.getTurnsTakenCounter().increment();
+					// get the other card (which was already turned up)
+					Card otherCard1 = (Card) this.getTurnedCardsBuffer().get(0);
+					Card otherCard2 = (Card) this.getTurnedCardsBuffer().get(1);
+					Card otherCard3 = (Card) this.getTurnedCardsBuffer().get(2);
+					Card otherCard4 = (Card) this.getTurnedCardsBuffer().get(3);
+					Card otherCard5 = (Card) this.getTurnedCardsBuffer().get(4);
 					
-					//Make an Array of type Int to store ranks of cards as numbers; not stings
-					for(int i = 0; i < this.getTurnedCardsBuffer().size();i++) {
+					
+				
+				
+					if((card.getSuit().equals(otherCard1.getSuit())) && (card.getSuit().equals(otherCard2.getSuit())) && (card.getSuit().equals(otherCard3.getSuit())) && (card.getSuit().equals(otherCard4.getSuit())) && (card.getSuit().equals(otherCard5.getSuit()))){
+						
+						cardsFormFlush = true;
+						
+					}
+					else
+					{
+						// The cards do not match, so start the timer to turn them down
+						cardsFormFlush = false;
+					}
+					
+//					if(cardsFormFlush==true) {
+//						// Five cards match, so remove them from the list (they will remain face up)
+//						this.getTurnedCardsBuffer().clear();
+//					}
+//					else
+//					{
+//						// The cards do not match, so start the timer to turn them down
+//						this.getTurnDownTimer().start();
+//					
+//					}
+	
+					
+					for(int i = 0; i<this.getTurnedCardsBuffer().size();i++) {
 						switch (this.getTurnedCardsBuffer().get(i).getRank()) {
 						case "2": cardsArray[i] = 2;
 						break;
@@ -91,65 +124,21 @@ public class FlushLevel extends RankTrioLevel{
 						}
 					}
 					
-					Arrays.sort(cardsArray);
+					//Sort Array of int Ranks in ascending order
+					Arrays.sort(cardsArray);		
 					
-					for(int i= 0; i<cardsArray.length;i++) {
-						rankSum = rankSum + cardsArray[i];
-					}
-					
-					// get the other card (which was already turned up)
-					Card otherCard1 = (Card) this.getTurnedCardsBuffer().get(0);
-					Card otherCard2 = (Card) this.getTurnedCardsBuffer().get(1);
-					Card otherCard3 = (Card) this.getTurnedCardsBuffer().get(2);
-					Card otherCard4 = (Card) this.getTurnedCardsBuffer().get(3);
-					Card otherCard5 = (Card) this.getTurnedCardsBuffer().get(4);
-					
-					
-					if((card.getSuit().equals(otherCard1.getSuit())) && (card.getSuit().equals(otherCard2.getSuit())) && (card.getSuit().equals(otherCard3.getSuit())) && (card.getSuit().equals(otherCard4.getSuit())) && (card.getSuit().equals(otherCard5.getSuit()))){
-						// Three cards match, so remove them from the list (they will remain face up)
-						if(cardsArray[4] == 14) {
-							this.getTurnedCardsBuffer().clear();
-							score+=700+rankSum+6;
-							getMainFrame().setScore(score);
+					//Check if they are in sequence (ex. 3,4,5,6,7) by comparing each value to the value in first positon of array
+					if(cardsArray[0]==(cardsArray[1])-1 && cardsArray[0]==(cardsArray[2])-2 && cardsArray[0]==(cardsArray[3])-3 && cardsArray[0]==(cardsArray[4])-4) {
+							cardsFormStraight = true;
 						}else {
-							this.getTurnedCardsBuffer().clear();
-							score+=700+rankSum;
-							getMainFrame().setScore(score);
+							cardsFormStraight = false;
 						}
-
-					}
-					else
-					{
-						// The cards do not match, so start the timer to turn them down
-						this.getTurnDownTimer().start();
-						score-=5;
-						rankSum=0;
-						getMainFrame().setScore(score);
-					}
+					
 				}
 				return true;
+				
 			}
-			return false;
-		}
-		
-		/*//GAME OVER 
-		@Override
-		protected boolean  isGameOver(){
-			for(int i = 0; i<this.getGrid().size()-2;i++) {
-				for(int j = i+1; j<this.getGrid().size()-1;j++) {
-					for(int k = j+1;j<this.getGrid().size();k++) {
-						if(this.getGrid().get(i).isFaceUp());
-					}
-				}
+					return false;
+					
 			}
-			//for (int i =0; i< this.getGrid().size();i++)
-				//if(!this.getGrid().get(i).isFaceUp()) return false;
-
-
-			return true;
-		}*/
-	
-
 	}
-	
-
