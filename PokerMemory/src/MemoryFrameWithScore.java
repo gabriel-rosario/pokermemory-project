@@ -165,11 +165,7 @@ public class MemoryFrameWithScore extends MemoryFrame {
 
 		JLabel lblNewLabel_3 = new JLabel("Points:");
 		panel_1.add(lblNewLabel_3);
-		
-		/*scoreCounter = new ScoreCounterLabel();
-		scoreCounter.setText("");
-		panel_1.add(scoreCounter);
-		*/
+
 		
 		scoreLabel = new JLabel("0");
 		scoreLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -192,11 +188,6 @@ public class MemoryFrameWithScore extends MemoryFrame {
 	public JLabel getLevelDescriptionLabel() {
 		return levelDescriptionLabel;
 	}
-	
-	/*public JLabel getScoreLabel() {
-		return this.scoreLabel;
-	}
-	*/
 
 	public void setTurnCounterLabel(TurnsTakenCounterLabel turnCounterLabel) {
 		this.turnCounterLabel = turnCounterLabel;

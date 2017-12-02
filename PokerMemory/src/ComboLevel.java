@@ -1,7 +1,13 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 public class ComboLevel extends FlushLevel{
@@ -10,7 +16,9 @@ public class ComboLevel extends FlushLevel{
 	boolean cardsFormStraight = false;
 	boolean cardsFormFlush = false; 
 	boolean cardsFormFullHouse = false;
-	
+	long score = 0;
+	long rankSum = 0;
+
 	
 	protected ComboLevel(TurnsTakenCounterLabel validTurnTime, JFrame mainFrame) {
 		super(validTurnTime, mainFrame);
@@ -18,8 +26,151 @@ public class ComboLevel extends FlushLevel{
 		this.setCardsToTurnUp(5);
 		this.setCardsPerRow(10);
 		this.setRowsPerGrid(5);
-	}
+		
+		ActionListener handSelector = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getActionCommand().equals("Straight")) {
+					if(cardsArray[4]==14) {
+						getTurnedCardsBuffer().clear();
+						score+=1000+100*20;
+						getMainFrame().setScore(score);
+					}else {
+						getTurnedCardsBuffer().clear();
+						score += 1000 + 100*cardsArray[4];
+						getMainFrame().setScore(score);
+					}
+				}
+				else if(e.getActionCommand().equals("Flush")) {
+					if(cardsArray[4] == 14) {
+						getTurnedCardsBuffer().clear();
+						score+=700+rankSum+6;
+						getMainFrame().setScore(score);
+					}else {
+						getTurnedCardsBuffer().clear();
+						score+=700+rankSum;
+						getMainFrame().setScore(score);
+					}
+				}
+				else if(e.getActionCommand().equals("Full House")) {
+					if(cardsArray[4] == 14) {
+						getTurnedCardsBuffer().clear();
+						score+=500+rankSum+6;
+						getMainFrame().setScore(score);
+					}else {
+						getTurnedCardsBuffer().clear();
+						score+=500+rankSum;
+						getMainFrame().setScore(score);
+					}
+				}
+				else if(e.getActionCommand().equals("Pass")) {
+					getTurnDownTimer().start();
+					score-=5;
+					getMainFrame().setScore(score);
+				}
+			}
+		};
+		JButton straight = new JButton("Straight");
+		straight.addActionListener(handSelector);
 
+		JButton flush = new JButton("Flush");
+		flush.addActionListener(handSelector);
+
+		JButton fullHouse = new JButton("Full House");
+		fullHouse.addActionListener(handSelector);
+
+		JButton pass = new JButton("Pass");
+		pass.addActionListener(handSelector);
+	}
+	
+	
+	
+	protected void showPossibleHands() {
+		ActionListener handSelector = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getActionCommand().equals("Straight")) {
+					if(cardsArray[4]==14) {
+						getTurnedCardsBuffer().clear();
+						score+=1000+100*20;
+						getMainFrame().setScore(score);
+					}else {
+						getTurnedCardsBuffer().clear();
+						score += 1000 + 100*cardsArray[4];
+						getMainFrame().setScore(score);
+					}
+				}
+				else if(e.getActionCommand().equals("Flush")) {
+					if(cardsArray[4] == 14) {
+						getTurnedCardsBuffer().clear();
+						score+=700+rankSum+6;
+						getMainFrame().setScore(score);
+					}else {
+						getTurnedCardsBuffer().clear();
+						score+=700+rankSum;
+						getMainFrame().setScore(score);
+					}
+				}
+				else if(e.getActionCommand().equals("Full House")) {
+					if(cardsArray[4] == 14) {
+						getTurnedCardsBuffer().clear();
+						score+=500+rankSum+6;
+						getMainFrame().setScore(score);
+					}else {
+						getTurnedCardsBuffer().clear();
+						score+=500+rankSum;
+						getMainFrame().setScore(score);
+					}
+				}
+				else if(e.getActionCommand().equals("Pass")) {
+					getTurnDownTimer().start();
+					score-=5;
+					getMainFrame().setScore(score);
+					}
+			}
+		};
+		
+		JButton straight = new JButton("Straight");
+		straight.addActionListener(handSelector);
+
+		JButton flush = new JButton("Flush");
+		flush.addActionListener(handSelector);
+
+		JButton fullHouse = new JButton("Full House");
+		fullHouse.addActionListener(handSelector);
+
+		JButton pass = new JButton("Pass");
+		pass.addActionListener(handSelector);
+		
+		if(cardsFormStraight) {
+			Object [] possibleHands = {straight,pass};
+			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[1]);
+			
+		}else if(cardsFormFlush){
+			Object [] possibleHands = {flush,pass};
+			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[1]);
+			
+		}else if(cardsFormFullHouse){
+			Object [] possibleHands = {fullHouse,pass};
+			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[1]);
+
+		}else if(cardsFormStraight&&cardsFormFlush){
+			Object [] possibleHands = {straight,flush,pass};
+			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[2]);
+
+		}else if(cardsFormStraight&&cardsFormFullHouse){
+			Object [] possibleHands = {straight,fullHouse,pass};
+			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[2]);
+
+		}else if(cardsFormFullHouse&&cardsFormFlush){
+			Object [] possibleHands = {flush,fullHouse,pass};
+			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[2]);
+
+		}else if(cardsFormStraight&&cardsFormFullHouse&&cardsFormFlush){
+			Object [] possibleHands = {straight,flush,fullHouse,pass};
+			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[3]);
+		}
+		
+	}
+		
 		@Override
 		protected void makeDeck() {
 			
@@ -81,29 +232,6 @@ public class ComboLevel extends FlushLevel{
 					}else {
 						cardsFormFlush = false;
 					}
-				
-				
-					/*if((card.getSuit().equals(otherCard1.getSuit())) && (card.getSuit().equals(otherCard2.getSuit())) && (card.getSuit().equals(otherCard3.getSuit())) && (card.getSuit().equals(otherCard4.getSuit())) && (card.getSuit().equals(otherCard5.getSuit()))){
-						
-						cardsFormFlush = true;
-						
-					}
-					else
-					{
-						// The cards do not match, so start the timer to turn them down
-						cardsFormFlush = false;
-					}*/
-					
-//					if(cardsFormFlush==true) {
-//						// Five cards match, so remove them from the list (they will remain face up)
-//						this.getTurnedCardsBuffer().clear();
-//					}
-//					else
-//					{
-//						// The cards do not match, so start the timer to turn them down
-//						this.getTurnDownTimer().start();
-//					
-//					}
 	
 					//turn ranks from string to int and store them in an array of ints
 					for(int i = 0; i<this.getTurnedCardsBuffer().size();i++) {
@@ -141,6 +269,10 @@ public class ComboLevel extends FlushLevel{
 					//Sort Array of int Ranks in ascending order
 					Arrays.sort(cardsRankArray);		
 					
+					for(int i= 0; i<cardsArray.length;i++) {
+						rankSum = rankSum + cardsArray[i];
+					}
+					
 					//Check if they are in sequence (ex. 3,4,5,6,7) by comparing each value to the value in first positon of array
 					if(cardsRankArray[0]==(cardsRankArray[1])-1 && cardsRankArray[0]==(cardsRankArray[2])-2 && cardsRankArray[0]==(cardsRankArray[3])-3 && cardsRankArray[0]==(cardsRankArray[4])-4) {
 							cardsFormStraight = true;
@@ -157,17 +289,18 @@ public class ComboLevel extends FlushLevel{
 					
 					//If the cards are a straight OR a flush OR a fullHouse, leave them up
 					if(cardsFormStraight||cardsFormFlush||cardsFormFullHouse) {
-						this.getTurnedCardsBuffer().clear();
+						getTurnedCardsBuffer().clear();
+						card.faceUp();
+						this.showPossibleHands();
+						
 					}else {
 						this.getTurnDownTimer().start();
+						rankSum=0;
+						score-=5;
+						getMainFrame().setScore(score);
 					}
 					
-					//Object [] possibleHands = {"Straight","Flush","Full House","Pass"};
-					
-					//if(cardsFormStraight || cardsFormFlush || cardsFormFullHouse) {
-					//	JOptionPane.showMessageDialog(getMainFrame(), "Select One:", "Possible Winning Hands", JOptionPane.INFORMATION_MESSAGE,null,possibleHands,possibleHands[0]);
-					//}
-					
+										
 				}
 				return true;
 				
