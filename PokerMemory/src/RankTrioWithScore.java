@@ -128,4 +128,38 @@ public class RankTrioWithScore extends EqualPairLevel {
 		return false;
 	}
 	
+	@Override
+	protected boolean  isGameOver(){
+
+		//Empieza el counter en la primera posicion del grid
+		for (int i =0; i< this.getGrid().size()-2;i++) {
+			//Verifica si la carta esta facedown
+			if(!this.getGrid().get(i).isFaceUp()) {
+				//if it is facedown pues guardar en rank en una variable (fue para limpiarlo un poco y para el debugger)
+				String iRank = this.getGrid().get(i).getRank();
+				for(int j = i+1;j<this.getGrid().size()-1;j++) {
+					//if it was facedown empieza otro loop en i+1 y verifica si esa carta esta facedown
+					if(!this.getGrid().get(j).isFaceUp()) {
+						String jRank = this.getGrid().get(j).getRank(); //save it en variable para limpieza
+						//if las dos cartas son iguales pues empieza OTRO loop para la tercera carta
+						if(iRank.equals(jRank)) {
+							for(int k = j+1;k<this.getGrid().size();k++) {
+								//si esta facedown pues compara otra vez el rank de J y K
+								if(!this.getGrid().get(k).isFaceUp()) {
+									String kRank = this.getGrid().get(k).getRank(); //save rank en variable para limpieza
+									//si jRank y kRank son igual, pues las tres cartas son igual so existe todavia un winning hand faceDown
+									if(jRank.equals(kRank)) {
+										return false;
+									}
+								}
+							}
+						}	
+					}
+				}
+			}
+		}
+		//si corre por el loop y no encuentra nada pues va a devolver true y pasa el game over
+		return true;
+	}
+	
 }

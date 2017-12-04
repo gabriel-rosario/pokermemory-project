@@ -27,7 +27,7 @@ public class ComboLevel extends FlushLevel{
 		this.setCardsPerRow(10);
 		this.setRowsPerGrid(5);
 		
-		ActionListener handSelector = new ActionListener() {
+		/*ActionListener handSelector = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getActionCommand().equals("Straight")) {
 					if(cardsArray[4]==14) {
@@ -79,97 +79,9 @@ public class ComboLevel extends FlushLevel{
 		fullHouse.addActionListener(handSelector);
 
 		JButton pass = new JButton("Pass");
-		pass.addActionListener(handSelector);
+		pass.addActionListener(handSelector);*/
 	}
-	
-	
-	
-	protected void showPossibleHands() {
-		ActionListener handSelector = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(e.getActionCommand().equals("Straight")) {
-					if(cardsArray[4]==14) {
-						getTurnedCardsBuffer().clear();
-						score+=1000+100*20;
-						getMainFrame().setScore(score);
-					}else {
-						getTurnedCardsBuffer().clear();
-						score += 1000 + 100*cardsArray[4];
-						getMainFrame().setScore(score);
-					}
-				}
-				else if(e.getActionCommand().equals("Flush")) {
-					if(cardsArray[4] == 14) {
-						getTurnedCardsBuffer().clear();
-						score+=700+rankSum+6;
-						getMainFrame().setScore(score);
-					}else {
-						getTurnedCardsBuffer().clear();
-						score+=700+rankSum;
-						getMainFrame().setScore(score);
-					}
-				}
-				else if(e.getActionCommand().equals("Full House")) {
-					if(cardsArray[4] == 14) {
-						getTurnedCardsBuffer().clear();
-						score+=500+rankSum+6;
-						getMainFrame().setScore(score);
-					}else {
-						getTurnedCardsBuffer().clear();
-						score+=500+rankSum;
-						getMainFrame().setScore(score);
-					}
-				}
-				else if(e.getActionCommand().equals("Pass")) {
-					getTurnDownTimer().start();
-					score-=5;
-					getMainFrame().setScore(score);
-					}
-			}
-		};
-		
-		JButton straight = new JButton("Straight");
-		straight.addActionListener(handSelector);
 
-		JButton flush = new JButton("Flush");
-		flush.addActionListener(handSelector);
-
-		JButton fullHouse = new JButton("Full House");
-		fullHouse.addActionListener(handSelector);
-
-		JButton pass = new JButton("Pass");
-		pass.addActionListener(handSelector);
-		
-		if(cardsFormStraight) {
-			Object [] possibleHands = {straight,pass};
-			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[1]);
-			
-		}else if(cardsFormFlush){
-			Object [] possibleHands = {flush,pass};
-			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[1]);
-			
-		}else if(cardsFormFullHouse){
-			Object [] possibleHands = {fullHouse,pass};
-			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[1]);
-
-		}else if(cardsFormStraight&&cardsFormFlush){
-			Object [] possibleHands = {straight,flush,pass};
-			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[2]);
-
-		}else if(cardsFormStraight&&cardsFormFullHouse){
-			Object [] possibleHands = {straight,fullHouse,pass};
-			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[2]);
-
-		}else if(cardsFormFullHouse&&cardsFormFlush){
-			Object [] possibleHands = {flush,fullHouse,pass};
-			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[2]);
-
-		}else if(cardsFormStraight&&cardsFormFullHouse&&cardsFormFlush){
-			Object [] possibleHands = {straight,flush,fullHouse,pass};
-			JOptionPane.showOptionDialog(getMainFrame(), "Select winning hand or PASS", "Winning Hand", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleHands, possibleHands[3]);
-		}
-		
-	}
 		
 		@Override
 		protected void makeDeck() {
@@ -197,6 +109,41 @@ public class ComboLevel extends FlushLevel{
 				String suit = cardNames[num].substring(1, 2);
 				this.getGrid().add( new Card(this, this.getCardIcons()[num], backIcon, num, rank, suit));
 			}
+		}
+		
+		protected int convertRanksToInt(String rank) {
+			int intRank = 0;
+				switch (rank) {
+				case "2": intRank = 2;
+				break;
+				case "3": intRank = 3;
+				break;
+				case "4": intRank = 4;
+				break;
+				case "5": intRank = 5;
+				break;
+				case "6": intRank = 6;
+				break;
+				case "7": intRank = 7;
+				break;
+				case "8": intRank = 8;
+				break;
+				case "9": intRank = 9;
+				break;
+				case "t": intRank = 10;
+				break;
+				case "j": intRank = 11;
+				break;
+				case "q": intRank = 12;
+				break;
+				case "k": intRank = 13;
+				break;
+				case "a": intRank = 14;
+				break;
+				default: break;
+				}
+				return intRank;
+
 		}
 
 		
@@ -269,8 +216,8 @@ public class ComboLevel extends FlushLevel{
 					//Sort Array of int Ranks in ascending order
 					Arrays.sort(cardsRankArray);		
 					
-					for(int i= 0; i<cardsArray.length;i++) {
-						rankSum = rankSum + cardsArray[i];
+					for(int i= 0; i<cardsRankArray.length;i++) {
+						rankSum = rankSum + cardsRankArray[i];
 					}
 					
 					//Check if they are in sequence (ex. 3,4,5,6,7) by comparing each value to the value in first positon of array
@@ -288,24 +235,160 @@ public class ComboLevel extends FlushLevel{
 					}
 					
 					//If the cards are a straight OR a flush OR a fullHouse, leave them up
+					card.faceUp();
+					
 					if(cardsFormStraight||cardsFormFlush||cardsFormFullHouse) {
-						getTurnedCardsBuffer().clear();
-						card.faceUp();
-						this.showPossibleHands();
 						
+						Object [] possibleHands = {"Straight","Flush","Full House","Pass",};
+						
+						int selectedHand = JOptionPane.showOptionDialog(getMainFrame(),"Select a winning hand","Pick a Winning Hand",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE, null, possibleHands,possibleHands[0]);
+					
+						switch(selectedHand) {
+						case 0:
+							if(cardsFormStraight) {
+								if(cardsRankArray[4]==14) {
+									score = 1000+100*20;
+									this.getTurnedCardsBuffer().clear();
+								}else {
+									score = 1000+100*cardsRankArray[4];
+									this.getTurnedCardsBuffer().clear();
+								}
+							}else {
+								score-=5;
+								this.getTurnDownTimer().start();
+							}
+							break;
+						case 1:
+							if(cardsFormFlush) {
+								score = 700 + rankSum;
+								this.getTurnedCardsBuffer().clear();
+							}else {
+								score -= 5;
+								this.getTurnDownTimer().start();
+							}
+						case 2:
+							if(cardsFormFullHouse) {
+								score = 1000 + rankSum;
+								this.getTurnedCardsBuffer().clear();
+							}else {
+								score -= 5;
+								this.getTurnDownTimer().start();
+							}
+						case 3:
+							score -= 5;
+							this.getTurnDownTimer().start();
+							break;
+						}
+						
+						getMainFrame().setScore(score);
 					}else {
 						this.getTurnDownTimer().start();
-						rankSum=0;
 						score-=5;
 						getMainFrame().setScore(score);
 					}
-					
-										
 				}
 				return true;
 				
 			}
-					return false;
+			return false;
 					
+			}				
+	
+		
+		@Override
+		protected boolean  isGameOver(){
+			int [] possibleHandsArray = new int [5];
+			int [] orderedPossibleHandsArray = new int[5];
+			boolean isStraight = false;
+			boolean isFlush = false;
+			boolean isFullHouse = false;
+			
+			//Empieza el counter en la primera posicion del grid
+			for (int i =0; i< this.getGrid().size()-4;i++) {
+				//Verifica si la carta esta facedown
+				if(!this.getGrid().get(i).isFaceUp()) {
+					possibleHandsArray[0] = convertRanksToInt(this.getGrid().get(i).getRank());
+						for(int j = i+1;j<this.getGrid().size()-3;j++) {
+						//if it was facedown empieza otro loop en i+1 y verifica si esa carta esta facedown
+						if(!this.getGrid().get(j).isFaceUp()) {
+							possibleHandsArray[1] = convertRanksToInt(this.getGrid().get(j).getRank());
+								for(int k = j+1;k<this.getGrid().size()-2;k++) {
+									if(!this.getGrid().get(k).isFaceUp()) {
+										possibleHandsArray[2] = convertRanksToInt(this.getGrid().get(k).getRank());
+											for(int p=k+1;p<this.getGrid().size()-1;p++) {
+												if(!this.getGrid().get(p).isFaceUp()) {
+													possibleHandsArray[3] = convertRanksToInt(this.getGrid().get(p).getRank());
+														for(int q = p+1;q<this.getGrid().size();q++) {
+															if(!this.getGrid().get(q).isFaceUp()) {
+																possibleHandsArray[4] = convertRanksToInt(this.getGrid().get(q).getRank());
+																for(int counter = 0; counter<5;counter++) {
+																	orderedPossibleHandsArray[counter] = possibleHandsArray[counter];
+																}
+																Arrays.sort(orderedPossibleHandsArray);
+																if(orderedPossibleHandsArray[0]==(orderedPossibleHandsArray[1]-1) && orderedPossibleHandsArray[0]==(orderedPossibleHandsArray[2]-2) && orderedPossibleHandsArray[0]==(orderedPossibleHandsArray[3]-3) && orderedPossibleHandsArray[0]==(orderedPossibleHandsArray[4]-4)) {
+																	isStraight = true;
+																}else if(((orderedPossibleHandsArray[0]==orderedPossibleHandsArray[1])&&(orderedPossibleHandsArray[0]==orderedPossibleHandsArray[2])&&(orderedPossibleHandsArray[3]==orderedPossibleHandsArray[4]))||((orderedPossibleHandsArray[0]==orderedPossibleHandsArray[1])&&(orderedPossibleHandsArray[2]==orderedPossibleHandsArray[3])&&(orderedPossibleHandsArray[2]==orderedPossibleHandsArray[4])) ) {
+																	isFullHouse = true;
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+					}
+				
+			
+			for (int i =0; i< this.getGrid().size()-4;i++) {
+				//Verifica si la carta esta facedown
+				if(!this.getGrid().get(i).isFaceUp()) {
+					//if it is facedown pues guardar en rank en una variable (fue para limpiarlo un poco y para el debugger)
+					String iSuit = this.getGrid().get(i).getSuit();
+					for(int j = i+1;j<this.getGrid().size()-3;j++) {
+						//if it was facedown empieza otro loop en i+1 y verifica si esa carta esta facedown
+						if(!this.getGrid().get(j).isFaceUp()) {
+							String jSuit = this.getGrid().get(j).getSuit(); //save it en variable para limpieza
+							//if las dos cartas son iguales pues empieza OTRO loop para la tercera carta
+							if(iSuit.equals(jSuit)) {
+								for(int k = j+1;k<this.getGrid().size()-2;k++) {
+									//si esta facedown pues compara otra vez el rank de J y K
+									if(!this.getGrid().get(k).isFaceUp()) {
+										String kSuit = this.getGrid().get(k).getSuit(); //save rank en variable para limpieza
+										//si jRank y kRank son igual, pues las tres cartas son igual so existe todavia un winning hand faceDown
+										if(jSuit.equals(kSuit)) {
+											for(int p=k+1;p<this.getGrid().size()-1;p++) {
+												if(!this.getGrid().get(p).isFaceUp()) {
+													String pSuit = this.getGrid().get(p).getSuit();
+													if(kSuit.equals(pSuit)) {
+														for(int q = p+1;q<this.getGrid().size();q++) {
+															if(!this.getGrid().get(q).isFaceUp()) {
+																String qSuit = this.getGrid().get(q).getSuit();
+																if(pSuit.equals(qSuit)) {
+																	isFlush = true;
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}	
+						}
+					}
+				}
 			}
-	}
+			
+			if(isFlush||isStraight||isFullHouse) {
+				return false;
+			}
+			
+			//si corre por el loop y no encuentra nada pues va a devolver true y pasa el game over
+			return true;
+		}
+		
+}
