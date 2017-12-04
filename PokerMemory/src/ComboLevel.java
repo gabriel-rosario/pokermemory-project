@@ -238,46 +238,102 @@ public class ComboLevel extends FlushLevel{
 					card.faceUp();
 					
 					if(cardsFormStraight||cardsFormFlush||cardsFormFullHouse) {
+						if(cardsFormStraight) {
+							Object [] possibleHands = {"Straight","Pass"};
+							
+							int selectedHand = JOptionPane.showOptionDialog(getMainFrame(),"Select a winning hand","Pick a Winning Hand",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE, null, possibleHands,possibleHands[0]);
 						
-						Object [] possibleHands = {"Straight","Flush","Full House","Pass",};
+							switch(selectedHand) {
+							case 0:
+								if(cardsFormStraight) {
+									if(cardsRankArray[4]==14) {
+										score = 1000+100*20;
+										this.getTurnedCardsBuffer().clear();
+									}else {
+										score = 1000+100*cardsRankArray[4];
+										this.getTurnedCardsBuffer().clear();
+									}
+								}else {
+									score-=5;
+									this.getTurnDownTimer().start();
+								}
+								break;
+							case 1:
+								score -= 5;
+								this.getTurnDownTimer().start();
+								break;
+							}
+						}else if(cardsFormFlush) {
+							Object [] possibleHands = {"Flush","Pass"};
+							
+							int selectedHand = JOptionPane.showOptionDialog(getMainFrame(),"Select a winning hand","Pick a Winning Hand",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE, null, possibleHands,possibleHands[0]);
 						
-						int selectedHand = JOptionPane.showOptionDialog(getMainFrame(),"Select a winning hand","Pick a Winning Hand",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE, null, possibleHands,possibleHands[0]);
-					
-						switch(selectedHand) {
-						case 0:
-							if(cardsFormStraight) {
-								if(cardsRankArray[4]==14) {
-									score = 1000+100*20;
+							switch(selectedHand) {
+							case 0:
+								if(cardsFormFlush) {
+									score = 700 + rankSum;
 									this.getTurnedCardsBuffer().clear();
 								}else {
-									score = 1000+100*cardsRankArray[4];
-									this.getTurnedCardsBuffer().clear();
+									score -= 5;
+									this.getTurnDownTimer().start();
 								}
-							}else {
-								score-=5;
-								this.getTurnDownTimer().start();
-							}
-							break;
-						case 1:
-							if(cardsFormFlush) {
-								score = 700 + rankSum;
-								this.getTurnedCardsBuffer().clear();
-							}else {
+							case 1:
 								score -= 5;
 								this.getTurnDownTimer().start();
+								break;
 							}
-						case 2:
-							if(cardsFormFullHouse) {
-								score = 1000 + rankSum;
-								this.getTurnedCardsBuffer().clear();
-							}else {
+						}else if(cardsFormFullHouse) {
+							Object [] possibleHands = {"Full House","Pass"};
+							
+							int selectedHand = JOptionPane.showOptionDialog(getMainFrame(),"Select a winning hand","Pick a Winning Hand",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE, null, possibleHands,possibleHands[0]);
+						
+							switch(selectedHand) {
+							case 0:
+								if(cardsFormFullHouse) {
+									score = 1000 + rankSum;
+									this.getTurnedCardsBuffer().clear();
+								}else {
+									score -= 5;
+									this.getTurnDownTimer().start();
+								}
+							case 1:
 								score -= 5;
 								this.getTurnDownTimer().start();
+								break;
 							}
-						case 3:
-							score -= 5;
-							this.getTurnDownTimer().start();
-							break;
+						}else if(cardsFormStraight&&cardsFormFlush){
+							Object [] possibleHands = {"Straight","Flush","Pass"};
+							
+							int selectedHand = JOptionPane.showOptionDialog(getMainFrame(),"Select a winning hand","Pick a Winning Hand",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE, null, possibleHands,possibleHands[0]);
+						
+							switch(selectedHand) {
+							case 0:
+								if(cardsFormStraight) {
+									if(cardsRankArray[4]==14) {
+										score = 1000+100*20;
+										this.getTurnedCardsBuffer().clear();
+									}else {
+										score = 1000+100*cardsRankArray[4];
+										this.getTurnedCardsBuffer().clear();
+									}
+								}else {
+									score-=5;
+									this.getTurnDownTimer().start();
+								}
+								break;
+							case 1:
+								if(cardsFormFlush) {
+									score = 700 + rankSum;
+									this.getTurnedCardsBuffer().clear();
+								}else {
+									score -= 5;
+									this.getTurnDownTimer().start();
+								}
+							case 2:
+								score -= 5;
+								this.getTurnDownTimer().start();
+								break;
+							}
 						}
 						
 						getMainFrame().setScore(score);
@@ -382,6 +438,7 @@ public class ComboLevel extends FlushLevel{
 					}
 				}
 			}
+			
 			
 			if(isFlush||isStraight||isFullHouse) {
 				return false;

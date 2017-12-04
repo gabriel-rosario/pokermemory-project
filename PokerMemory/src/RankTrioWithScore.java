@@ -16,6 +16,7 @@ public class RankTrioWithScore extends EqualPairLevel {
 	long score = 0;
 	int [] cardsArray = new int [3];
 	long rankSum = 0;
+	int handCounter = 0;
 
 
 	// TRIO LEVEL: The goal is to find, on each turn, three cards with the same rank
@@ -110,9 +111,10 @@ public class RankTrioWithScore extends EqualPairLevel {
 				Card otherCard2 = (Card) this.getTurnedCardsBuffer().get(1);
 				if((card.getRank().equals(otherCard1.getRank())) && (card.getRank().equals(otherCard2.getRank()))) {
 					// Three cards match, so remove them from the list (they will remain face up)
-					score += score + 100 + rankSum;
+					score += 100 + rankSum;
 					getMainFrame().setScore(score);
 					this.getTurnedCardsBuffer().clear();
+					handCounter++;
 				}
 				else
 				{
