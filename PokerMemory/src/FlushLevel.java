@@ -9,6 +9,7 @@ public class FlushLevel extends RankTrioLevel{
 	int [] possibleHandsArray = new int [5];
 	long rankSum = 0;
 	long score = 0;
+	int handsCounter = 0;
 	
 	protected FlushLevel(TurnsTakenCounterLabel validTurnTime, JFrame mainFrame) {
 		super(validTurnTime, mainFrame);
@@ -90,6 +91,7 @@ public class FlushLevel extends RankTrioLevel{
 							score+=700+rankSum;
 							getMainFrame().setScore(score);
 						}
+						handsCounter++;
 
 					}
 					else
@@ -108,50 +110,11 @@ public class FlushLevel extends RankTrioLevel{
 		
 		@Override
 		protected boolean  isGameOver(){
-
-			//Empieza el counter en la primera posicion del grid
-			for (int i =0; i< this.getGrid().size()-4;i++) {
-				//Verifica si la carta esta facedown
-				if(!this.getGrid().get(i).isFaceUp()) {
-					//if it is facedown pues guardar en rank en una variable (fue para limpiarlo un poco y para el debugger)
-					String iSuit = this.getGrid().get(i).getSuit();
-					for(int j = i+1;j<this.getGrid().size()-3;j++) {
-						//if it was facedown empieza otro loop en i+1 y verifica si esa carta esta facedown
-						if(!this.getGrid().get(j).isFaceUp()) {
-							String jSuit = this.getGrid().get(j).getSuit(); //save it en variable para limpieza
-							//if las dos cartas son iguales pues empieza OTRO loop para la tercera carta
-							if(iSuit.equals(jSuit)) {
-								for(int k = j+1;k<this.getGrid().size()-2;k++) {
-									//si esta facedown pues compara otra vez el rank de J y K
-									if(!this.getGrid().get(k).isFaceUp()) {
-										String kSuit = this.getGrid().get(k).getSuit(); //save rank en variable para limpieza
-										//si jRank y kRank son igual, pues las tres cartas son igual so existe todavia un winning hand faceDown
-										if(jSuit.equals(kSuit)) {
-											for(int p=k+1;p<this.getGrid().size()-1;p++) {
-												if(!this.getGrid().get(p).isFaceUp()) {
-													String pSuit = this.getGrid().get(p).getSuit();
-													if(kSuit.equals(pSuit)) {
-														for(int q = p+1;q<this.getGrid().size();q++) {
-															if(!this.getGrid().get(q).isFaceUp()) {
-																String qSuit = this.getGrid().get(q).getSuit();
-																if(pSuit.equals(qSuit)) {
-																	return false;
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}	
-						}
-					}
-				}
+			if(handsCounter == 8) {
+				return true;
+			}else {
+				return false;
 			}
-			//si corre por el loop y no encuentra nada pues va a devolver true y pasa el game over
-			return true;
 		}
 	
 
