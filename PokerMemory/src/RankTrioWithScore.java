@@ -16,8 +16,7 @@ public class RankTrioWithScore extends EqualPairLevel {
 	long score = 0;
 	int [] cardsArray = new int [3];
 	long rankSum = 0;
-	int handCounter = 0;
-
+	int handsCounter = 0;
 
 	// TRIO LEVEL: The goal is to find, on each turn, three cards with the same rank
 
@@ -70,6 +69,7 @@ public class RankTrioWithScore extends EqualPairLevel {
 				// Record the player's turn
 				this.getTurnsTakenCounter().increment();
 				
+				//Turn Ranks from Strings to int.  Store Ranks in an array
 				for(int i = 0; i < this.getTurnedCardsBuffer().size();i++) {
 					switch (this.getTurnedCardsBuffer().get(i).getRank()) {
 					case "2": cardsArray[i] = 2;
@@ -102,6 +102,7 @@ public class RankTrioWithScore extends EqualPairLevel {
 					}
 				}
 				
+				//Calculate Sum of Ranks
 				for(int i= 0; i<cardsArray.length;i++) {
 					rankSum = rankSum + cardsArray[i];
 				}
@@ -110,15 +111,15 @@ public class RankTrioWithScore extends EqualPairLevel {
 				Card otherCard1 = (Card) this.getTurnedCardsBuffer().get(0);
 				Card otherCard2 = (Card) this.getTurnedCardsBuffer().get(1);
 				if((card.getRank().equals(otherCard1.getRank())) && (card.getRank().equals(otherCard2.getRank()))) {
-					// Three cards match, so remove them from the list (they will remain face up)
+					// Three cards match, so remove them from the list (they will remain face up).  Add 100 + sum of ranks
 					score += 100 + rankSum;
 					getMainFrame().setScore(score);
 					this.getTurnedCardsBuffer().clear();
-					handCounter++;
+					handsCounter++;
 				}
 				else
 				{
-					// The cards do not match, so start the timer to turn them down
+					// The cards do not match, so start the timer to turn them down.  Set reset rankSum to 0.  Remove 5 points.
 					this.getTurnDownTimer().start();
 					rankSum = 0;
 					score -= 5;
@@ -133,35 +134,13 @@ public class RankTrioWithScore extends EqualPairLevel {
 	@Override
 	protected boolean  isGameOver(){
 
-		//Empieza el counter en la primera posicion del grid
-		for (int i =0; i< this.getGrid().size()-2;i++) {
-			//Verifica si la carta esta facedown
-			if(!this.getGrid().get(i).isFaceUp()) {
-				//if it is facedown pues guardar en rank en una variable (fue para limpiarlo un poco y para el debugger)
-				String iRank = this.getGrid().get(i).getRank();
-				for(int j = i+1;j<this.getGrid().size()-1;j++) {
-					//if it was facedown empieza otro loop en i+1 y verifica si esa carta esta facedown
-					if(!this.getGrid().get(j).isFaceUp()) {
-						String jRank = this.getGrid().get(j).getRank(); //save it en variable para limpieza
-						//if las dos cartas son iguales pues empieza OTRO loop para la tercera carta
-						if(iRank.equals(jRank)) {
-							for(int k = j+1;k<this.getGrid().size();k++) {
-								//si esta facedown pues compara otra vez el rank de J y K
-								if(!this.getGrid().get(k).isFaceUp()) {
-									String kRank = this.getGrid().get(k).getRank(); //save rank en variable para limpieza
-									//si jRank y kRank son igual, pues las tres cartas son igual so existe todavia un winning hand faceDown
-									if(jRank.equals(kRank)) {
-										return false;
-									}
-								}
-							}
-						}	
-					}
-				}
-			}
+		//hay un maximo de 12 trios.  cuando se llega a 12, game over.
+		if(handsCounter==12) {
+			return true;
+		}else {
+			return false;
 		}
-		//si corre por el loop y no encuentra nada pues va a devolver true y pasa el game over
-		return true;
+		
 	}
 	
 }

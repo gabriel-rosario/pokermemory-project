@@ -21,36 +21,8 @@ public class StraightLevel extends FlushLevel{
 		this.setCardsPerRow(10);
 		this.setRowsPerGrid(5);
 	}
-/*
-		@Override
-		protected void makeDeck() {
-			
-
-			//back card
-			ImageIcon backIcon = this.getCardIcons()[this.getTotalCardsPerDeck()];
-
-			int cardsToAdd[] = new int[getRowsPerGrid() * getCardsPerRow()];
-			for(int i = 0; i < (getRowsPerGrid() * getCardsPerRow()); i++)
-			{
-				cardsToAdd[i] = i;
-			}
-
-			// randomize the order of the deck
-			this.randomizeIntArray(cardsToAdd);
-
-			// make each card object
-			for(int i = 0; i < cardsToAdd.length; i++)
-			{
-				// number of the card, randomized
-				int num = cardsToAdd[i];
-				// make the card object and add it to the panel
-				String rank = cardNames[num].substring(0, 1);
-				String suit = cardNames[num].substring(1, 2);
-				this.getGrid().add( new Card(this, this.getCardIcons()[num], backIcon, num, rank, suit));
-			}
-		}		
-		*/
 	
+		//Convert Ranks to Int
 		protected int convertRanksToInt(String rank) {
 			int intRank = 0;
 				switch (rank) {
@@ -100,7 +72,7 @@ public class StraightLevel extends FlushLevel{
 					// Record the player's turn
 					this.getTurnsTakenCounter().increment();
 					
-					//Make an Array of type Int to store ranks of cards as numbers; not stings
+					//Make an Array of type Int to store ranks of cards as numbers; not strings
 					for(int i = 0; i < this.getTurnedCardsBuffer().size();i++) {
 						switch (this.getTurnedCardsBuffer().get(i).getRank()) {
 						case "2": cardsArray[i] = 2;
@@ -142,7 +114,7 @@ public class StraightLevel extends FlushLevel{
 						}
 					
 					
-					//if the cards are a Straight, leave them face up, clear buffer
+					//if the cards are a Straight, leave them face up, clear buffer. if last card is A(rank = 14), score is 1000+100*20
 					if(cardsFormStraight==true) {
 						if(cardsArray[4]==14) {
 							this.getTurnedCardsBuffer().clear();
@@ -153,11 +125,10 @@ public class StraightLevel extends FlushLevel{
 							score += 1000 + 100*cardsArray[4];
 							getMainFrame().setScore(score);
 						}
-						// Five cards match, so remove them from the list (they will remain face up)
 					}
 					else
 					{
-						// The cards do not match, so start the timer to turn them down
+						// The cards do not match, so start the timer to turn them down.  remove 5 points.
 						this.getTurnDownTimer().start();
 						score-=5;
 						getMainFrame().setScore(score);

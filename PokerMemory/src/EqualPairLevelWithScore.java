@@ -78,13 +78,13 @@ public class EqualPairLevelWithScore extends EasyLevel {
 				this.getTurnsTakenCounter().increment();
 				// get the other card (which was already turned up)
 				Card otherCard = (Card) this.getTurnedCardsBuffer().get(0);
-				// the cards match, so remove them from the list (they will remain face up)
+				// the cards match, so remove them from the list (they will remain face up) Add score
 				if( otherCard.getNum() == card.getNum()) {
 					this.getTurnedCardsBuffer().clear();
-					score = score + 50;
+					score += 50;
 					getMainFrame().setScore(score);
 				}
-				// the cards do not match, so start the timer to turn them down
+				// the cards do not match, so start the timer to turn them down. Reduce Score by 5points
 				else {
 					this.getTurnDownTimer().start();
 					score = score - 5;
